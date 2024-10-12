@@ -17,6 +17,8 @@ penZOffset = 3
 firstPenXPosition = 28
 # Z coordinate for holding the first pen in the pen rack.
 firstPenZPosition = 238
+# Y cord for pen rack. Note theat this has to be where the pen holder can grab the pen.
+penYposition = 330
 # Extra amount of retraction during painting to avoid oozing.
 extraRetraction = 5.5
 # The number of unpainted layers to print between each painted layer. Larger numbers are useful for smaller layer heights.
@@ -349,6 +351,7 @@ def getPen(pen):
     # generate gcode to fetch the appropriate pen
     if penside == 0:
         getlines = ["; Get pen " + str(pen) + "\n",
+                    "G0 F7000 Y" + str(penYposition) + " ; move Y axis to under pen rack",
                     "G0 F7000 X" + str(firstPenXPosition + penoffset) + " Z" + str(firstPenZPosition - 152.0) + " ; go under pen\n",
                     "G0 F2000 ; set speed slow\n",
                     "G0 Z" + str(firstPenZPosition) + " ; lift pen\n",
@@ -358,6 +361,7 @@ def getPen(pen):
         
     else:
         getlines = ["; Get pen " + str(pen) + "\n",
+                    "G0 F7000 Y" + str(penYposition) + " ; move Y axis to under pen rack",
                     "G0 F7000 X" + str(firstPenXPosition + 41 + penoffset) + " Z" + str(firstPenZPosition - 152.0) + " ; go under pen\n",
                     "G0 F2000 ; set speed slow\n",
                     "G0 Z" + str(firstPenZPosition) + " ; lift pen\n",
@@ -375,6 +379,7 @@ def returnPen(pen):
     if penside == 0:
         placelines = ["; Replace pen " + str(pen) + "\n",
                     "G0 F7000 ; set speed fast\n",
+                    "G0 F7000 Y" + str(penYposition) + " ; move Y axis to under pen rack",
                     "G0 X" + str(firstPenXPosition + 20.5 + penoffset) + " Z" + str(firstPenZPosition - 152) + " ; go under gap\n",
                     "G0 Z" + str(firstPenZPosition) + " ; lift pen\n",
                     "G0 F2000 ; set speed slow\n",
@@ -385,6 +390,7 @@ def returnPen(pen):
     else:
         placelines = ["; Replace pen " + str(pen) + "\n",
                     "G0 F7000 ; set speed fast\n",
+                    "G0 F7000 Y" + str(penYposition) + " ; move Y axis to under pen rack",
                     "G0 X" + str(firstPenXPosition + 20.5 + penoffset) + " Z" + str(firstPenZPosition - 152) + " ; go under gap\n",
                     "G0 Z" + str(firstPenZPosition) + " ; lift pen\n",
                     "G0 F2000 ; set speed slow\n",
